@@ -1,0 +1,3 @@
+shared.rollout:
+    resource: '../src/Rollout/Controller/'
+    type: attribute

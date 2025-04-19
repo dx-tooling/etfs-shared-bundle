@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EnterpriseToolingForSymfony\SharedBundle\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection'
+            - '../src/**/Entity'
+            - '../src/**/Dto'
+            - '../src/**/ApiDto'
+            - '../src/**/Enum'
+            - '../src/**/Resources'
+            - '../tests'

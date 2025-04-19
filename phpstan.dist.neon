@@ -1,0 +1,20 @@
+parameters:
+    level: 9
+    paths:
+        - src/
+        - tests/
+    ergebnis:
+        final:
+            enabled: false
+        noExtends:
+            enabled: false
+        noNullableReturnTypeDeclaration:
+            enabled: false
+        noConstructorParameterWithDefaultValue:
+            enabled: false
+        noParameterWithNullDefaultValue:
+            enabled: false
+        noParameterWithNullableTypeDeclaration:
+            enabled: false
+        noParameterWithContainerTypeDeclaration:
+            enabled: false
