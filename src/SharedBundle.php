@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EnterpriseToolingForSymfony\SharedBundle;
 
-use EnterpriseToolingForSymfony\SharedBundle\DependencyInjection\SharedExtension;
+use EnterpriseToolingForSymfony\SharedBundle\DependencyInjection\EtfsSharedExtension;
 use LogicException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
@@ -26,7 +26,7 @@ class SharedBundle extends Bundle
     public function getContainerExtension(): ?ExtensionInterface
     {
         if (null === $this->extension) {
-            $this->extension = new SharedExtension($this);
+            $this->extension = new EtfsSharedExtension($this);
         }
 
         if ($this->extension === false) {

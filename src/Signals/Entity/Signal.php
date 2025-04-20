@@ -12,7 +12,7 @@ use Exception;
 use ValueError;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'shared_signals')]
+#[ORM\Table(name: 'signals')]
 class Signal
 {
     /**

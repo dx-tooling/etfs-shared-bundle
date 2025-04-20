@@ -11,7 +11,7 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('shared');
+        $treeBuilder = new TreeBuilder('etfs_shared');
 
         return $treeBuilder;
     }

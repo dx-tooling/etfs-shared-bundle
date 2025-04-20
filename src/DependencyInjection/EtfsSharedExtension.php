@@ -14,7 +14,7 @@ use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use ValueError;
 
-class SharedExtension extends Extension implements PrependExtensionInterface
+class EtfsSharedExtension extends Extension implements PrependExtensionInterface
 {
     private BundleInterface $bundle;
 
@@ -30,15 +30,6 @@ class SharedExtension extends Extension implements PrependExtensionInterface
         array            $configs,
         ContainerBuilder $container
     ): void {
-        $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
-
-        // Set parameters based on config
-        if (array_key_exists('backend_app_api', $config)) {
-            $container->setParameter('shared.backend_app_api.base_url', $config['backend_app_api']['base_url']);
-            $container->setParameter('shared.backend_app_api.api_key', $config['backend_app_api']['api_key']);
-        }
-
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
         $loader->load('services.yaml');
     }
