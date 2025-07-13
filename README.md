@@ -1,1 +1,1 @@
-# Enterprise Tooling for Symfony · WebUI Bundle
+# Enterprise Tooling for Symfony · Shared Bundle

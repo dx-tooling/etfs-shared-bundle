@@ -1,5 +1,5 @@
 {
-    "name": "dx-tooling/etfs-shared-bundle",
+    "name": "enterprise-tooling-for-symfony/shared-bundle",
     "require": {
         "php": "^8.4",
         "ext-pcntl": "*",
