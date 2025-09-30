@@ -12,7 +12,7 @@ use Exception;
 use ValueError;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'signals')]
+#[ORM\Table(name: 'etfs_shared_bundle_signals')]
 class Signal
 {
     /**

@@ -11,7 +11,7 @@ use RuntimeException;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'command_run_summaries')]
+#[ORM\Table(name: 'etfs_shared_bundle_command_run_summaries')]
 #[ORM\Index(
     name: 'command_name_started_at_idx',
     columns: ['command_name', 'started_at']
