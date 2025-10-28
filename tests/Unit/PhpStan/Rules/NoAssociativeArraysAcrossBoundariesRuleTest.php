@@ -19,6 +19,8 @@ final class NoAssociativeArraysAcrossBoundariesRuleTest extends TestCase
             $root . '/tests/Fixtures/PhpStan/NoAssociativeArraysAcrossBoundaries/Bad/PublicReturnAssociative.php',
             $root . '/tests/Fixtures/PhpStan/NoAssociativeArraysAcrossBoundaries/Bad/PublicParamAssociative.php',
             $root . '/tests/Fixtures/PhpStan/NoAssociativeArraysAcrossBoundaries/Bad/PublicReturnListOfArrays.php',
+            $root . '/tests/Fixtures/PhpStan/NoAssociativeArraysAcrossBoundaries/Bad/PublicReturnListOfMixed.php',
+            $root . '/tests/Fixtures/PhpStan/NoAssociativeArraysAcrossBoundaries/Bad/PublicParamListOfMixed.php',
         ];
 
         foreach ($fixtures as $fixture) {
@@ -28,7 +30,7 @@ final class NoAssociativeArraysAcrossBoundariesRuleTest extends TestCase
 
             $this->assertSame(1, $exitCode, 'Expected errors for disallowed array usage');
             $this->assertNotEmpty($errors);
-            $this->assertStringContainsString('Only simple lists (list<T>, non-array T) are allowed across class boundaries', (string) ($errors[0]['message'] ?? ''));
+            $this->assertStringContainsString('Only simple lists (list<T>, non-array T, non-mixed T) are allowed across class boundaries', (string) ($errors[0]['message'] ?? ''));
         }
     }
 

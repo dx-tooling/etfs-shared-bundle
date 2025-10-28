@@ -11,12 +11,13 @@ use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\IntegerType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\Type;
 use PHPStan\Type\UnionType;
 
 /**
  * For public/protected methods and interface methods, disallow associative/complex arrays
- * in parameter types and return types. Only simple lists are allowed: list<T> where T is not an array.
+ * in parameter types and return types. Only simple lists are allowed: list<T> where T is not an array and not mixed.
  * Private methods are ignored to allow local usage within a class.
  *
  * @implements Rule<ClassMethod>
@@ -83,7 +84,7 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
             if ($this->containsDisallowedArray($paramType)) {
                 $paramName = $parameterReflection->getName();
                 $errors[]  = RuleErrorBuilder::message(sprintf(
-                    'Only simple lists (list<T>, non-array T) are allowed across class boundaries; parameter $%s of %s::%s() uses an associative/complex array type. Define a dedicated DTO instead.',
+                    'Only simple lists (list<T>, non-array T, non-mixed T) are allowed across class boundaries; parameter $%s of %s::%s() uses an associative/complex array type. Define a dedicated DTO instead.',
                     $paramName,
                     $className,
                     $methodName
@@ -108,7 +109,7 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
             $hasArrayLikeReturn = preg_match('/@return\s+.*(list\s*<\s*array|array\s*<|array\s*\{)/i', $doc) === 1;
             if ($hasArrayLikeReturn) {
                 $errors[] = RuleErrorBuilder::message(sprintf(
-                    'Only simple lists (list<T>, non-array T) are allowed across class boundaries; return type of %s::%s() uses an associative/complex array type. Define a dedicated DTO instead.',
+                    'Only simple lists (list<T>, non-array T, non-mixed T) are allowed across class boundaries; return type of %s::%s() uses an associative/complex array type. Define a dedicated DTO instead.',
                     $className,
                     $methodName
                 ))->line($node->getLine())->identifier('noAssociativeArraysAcrossBoundaries.return')->build();
@@ -120,7 +121,7 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
         $returnType = $variant->getReturnType();
         if ($this->containsDisallowedArray($returnType)) {
             $errors[] = RuleErrorBuilder::message(sprintf(
-                'Only simple lists (list<T>, non-array T) are allowed across class boundaries; return type of %s::%s() uses an associative/complex array type. Define a dedicated DTO instead.',
+                'Only simple lists (list<T>, non-array T, non-mixed T) are allowed across class boundaries; return type of %s::%s() uses an associative/complex array type. Define a dedicated DTO instead.',
                 $className,
                 $methodName
             ))->line($node->getLine())->identifier('noAssociativeArraysAcrossBoundaries.return')->build();
@@ -147,7 +148,7 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
             return true;
         }
 
-        // Generic arrays: allowed only if keys are integers (list-like) AND item type is not array-like
+        // Generic arrays: allowed only if keys are integers (list-like) AND item type is not array-like AND not mixed
         foreach ($type->getArrays() as $arrayType) {
             $keyType   = $arrayType->getKeyType();
             $valueType = $arrayType->getItemType();
@@ -159,6 +160,10 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
 
             if ($this->isArrayLike($valueType)) {
                 return true; // nested arrays are disallowed
+            }
+
+            if ($valueType instanceof MixedType) {
+                return true; // mixed types are disallowed
             }
         }
 
