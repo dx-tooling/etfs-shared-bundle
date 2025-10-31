@@ -9,8 +9,8 @@ else
     ENV="dev"
 fi
 
-source ".env"
-[ -f ".env.local" ] && source ".env.local" || true
+source .env
+[ -f .env.local ] && source .env.local || true
 [ -f ".env.${ENV}" ] && source ".env.${ENV}" || true
 [ -f ".env.${ENV}.local" ] && source ".env.${ENV}.local" || true
 
