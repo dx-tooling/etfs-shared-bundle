@@ -3,8 +3,15 @@
 
 set -e
 
-SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+if [[ "$APP_ENV" != "" ]]; then
+    ENV="$APP_ENV"
+else
+    ENV="dev"
+fi
 
-source "${SCRIPT_FOLDER}/../bin/_init.sh"
+source ".env"
+[ -f ".env.local" ] && source ".env.local" || true
+[ -f ".env.${ENV}" ] && source ".env.${ENV}" || true
+[ -f ".env.${ENV}.local" ] && source ".env.${ENV}.local" || true
 
 mysql -h"${DATABASE_HOST}" -u"${DATABASE_USER}" -p"${DATABASE_PASSWORD}" "${DATABASE_DB}" "$@"
