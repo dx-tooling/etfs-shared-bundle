@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Run all quality tools"
+#MISE description="Run software tests"
 #USAGE flag "--quick" help="Only run quick-running tests (architecture, bats, unit)"
 
 set -e
