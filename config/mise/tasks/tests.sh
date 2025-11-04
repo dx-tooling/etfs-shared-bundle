@@ -41,4 +41,3 @@ echo "Running application tests..."
 /usr/bin/env php bin/phpunit tests/Application
 
 echo "All tests completed successfully! ✨"
-
