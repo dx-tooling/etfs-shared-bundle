@@ -8,15 +8,15 @@ CHECK_VIOLATIONS="${usage_check_violations:-false}"
 
 echo
 echo "Running Doctrine Schema Validation..."
-/usr/bin/env php bin/console doctrine:schema:validate
+mise run in-app-container php bin/console doctrine:schema:validate
 
 echo
 echo "Running PHP CS Fixer..."
 if [ "${CHECK_VIOLATIONS}" == "true" ]
 then
-    /usr/bin/env php bin/php-cs-fixer.php check
+    mise run in-app-container php bin/php-cs-fixer.php check
 else
-    /usr/bin/env php bin/php-cs-fixer.php fix
+    mise run in-app-container php bin/php-cs-fixer.php fix
 fi
 
 echo
@@ -26,22 +26,22 @@ echo "Running Prettier..."
 
 if [ "${CHECK_VIOLATIONS}" == "true" ]
 then
-    /usr/bin/env npm run prettier
+    mise run in-app-container mise exec node -- npm run prettier
 else
-    /usr/bin/env npm run prettier:fix
+    mise run in-app-container mise exec node -- npm run prettier:fix
 fi
 
 echo
 echo "Running ESLint..."
-/usr/bin/env npm run lint
+mise run in-app-container mise exec node -- npm run lint
 
 echo
 echo "Running tsc to check for TypeScript errors..."
-/usr/bin/env npm exec tsc
+mise run in-app-container mise exec node -- npm exec tsc
 
 echo
 echo "Running PHPStan..."
-/usr/bin/env php vendor/bin/phpstan --memory-limit=1024M
+mise run in-app-container mise exec node -- php vendor/bin/phpstan --memory-limit=1024M
 
 echo
 echo "All checks and cleanups completed successfully! ✨"

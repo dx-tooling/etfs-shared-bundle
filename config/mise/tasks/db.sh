@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Connect to the local application database"
+#MISE description="lalala"
 
 set -e
 
@@ -14,4 +14,15 @@ source .env
 [ -f ".env.${ENV}" ] && source ".env.${ENV}" || true
 [ -f ".env.${ENV}.local" ] && source ".env.${ENV}.local" || true
 
-mysql -h"${DATABASE_HOST}" -u"${DATABASE_USER}" -p"${DATABASE_PASSWORD}" "${DATABASE_DB}" "$@"
+/usr/bin/env docker \
+    run \
+    -it \
+    --network etfs-app-starter-kit_etfs_app_starter_kit \
+    --rm \
+    mysql \
+    mysql \
+    -h"${DATABASE_HOST}" \
+    -u"${DATABASE_USER}" \
+    -p"${DATABASE_PASSWORD}" \
+    "${DATABASE_DB}" \
+    "$@"

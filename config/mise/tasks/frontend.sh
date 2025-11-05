@@ -4,5 +4,5 @@
 set -e
 
 rm -rf public/assets
-/usr/bin/env php bin/console tailwind:build
-/usr/bin/env php bin/console asset-map:compile
+mise run in-app-container mise exec node -- php bin/console tailwind:build
+mise run in-app-container php bin/console asset-map:compile

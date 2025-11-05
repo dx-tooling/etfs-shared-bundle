@@ -8,15 +8,15 @@ QUICK="${usage_quick:-false}"
 
 echo
 echo "Running architecture tests..."
-/usr/bin/env php vendor/bin/pest -v --group=architecture
+mise run in-app-container php vendor/bin/pest -v --group=architecture
 
 echo
 echo "Running shell-scripts tests..."
-/usr/bin/env bats tests/ShellScripts
+mise run in-app-container mise exec bats -- bats tests/ShellScripts
 
 echo
 echo "Running unit tests..."
-/usr/bin/env php bin/phpunit tests/Unit
+mise run in-app-container php bin/phpunit tests/Unit
 
 if [ "${QUICK}" == "true" ]
 then
@@ -26,16 +26,16 @@ fi
 
 echo
 echo "Running integration tests..."
-/usr/bin/env php bin/console doctrine:database:drop --if-exists --force --env=test
-/usr/bin/env php bin/console doctrine:database:create --env=test
-/usr/bin/env php bin/console doctrine:migrations:migrate --no-interaction --env=test
-/usr/bin/env php bin/phpunit tests/Integration
+mise run in-app-container php bin/console doctrine:database:drop --if-exists --force --env=test
+mise run in-app-container php bin/console doctrine:database:create --env=test
+mise run in-app-container php bin/console doctrine:migrations:migrate --no-interaction --env=test
+mise run in-app-container php bin/phpunit tests/Integration
 
 echo
 echo "Running application tests..."
-/usr/bin/env php bin/console doctrine:database:drop --if-exists --force --env=test
-/usr/bin/env php bin/console doctrine:database:create --env=test
-/usr/bin/env php bin/console doctrine:migrations:migrate --no-interaction --env=test
-/usr/bin/env php bin/phpunit tests/Application
+mise run in-app-container php bin/console doctrine:database:drop --if-exists --force --env=test
+mise run in-app-container php bin/console doctrine:database:create --env=test
+mise run in-app-container php bin/console doctrine:migrations:migrate --no-interaction --env=test
+mise run in-app-container php bin/phpunit tests/Application
 
 echo "All tests completed successfully! ✨"
