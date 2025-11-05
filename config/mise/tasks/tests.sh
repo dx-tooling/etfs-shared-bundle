@@ -6,15 +6,13 @@ set -e
 
 QUICK="${usage_quick:-false}"
 
-echo $QUICK
-
 echo
 echo "Running architecture tests..."
 /usr/bin/env php vendor/bin/pest --group=architecture
 
 echo
 echo "Running shell-scripts tests..."
-/usr/bin/env bats tests/ShellScripts/test-docker-cli-wrapper.bats
+/usr/bin/env bats tests/ShellScripts
 
 echo
 echo "Running unit tests..."
@@ -41,4 +39,3 @@ echo "Running application tests..."
 /usr/bin/env php bin/phpunit tests/Application
 
 echo "All tests completed successfully! ✨"
-
