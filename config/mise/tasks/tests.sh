@@ -8,7 +8,7 @@ QUICK="${usage_quick:-false}"
 
 echo
 echo "Running architecture tests..."
-/usr/bin/env php vendor/bin/pest --group=architecture
+/usr/bin/env php vendor/bin/pest -v --group=architecture
 
 echo
 echo "Running shell-scripts tests..."
