@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="lalala"
+#MISE description="Connect to the database"
 
 set -e
 

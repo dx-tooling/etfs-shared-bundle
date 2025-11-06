@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-#MISE description="Run NPM in the ETFS app container"
+#MISE description="Run NPM"
 
 mise run in-app-container mise exec node -- npm "$@"
