@@ -14,15 +14,9 @@ source .env
 [ -f ".env.${ENV}" ] && source ".env.${ENV}" || true
 [ -f ".env.${ENV}.local" ] && source ".env.${ENV}.local" || true
 
-/usr/bin/env docker \
-    run \
-    -it \
-    --network etfs-app-starter-kit_etfs_app_starter_kit \
-    --rm \
-    mysql \
-    mysql \
+mise run in-app-container mysql \
+    --ssl=false \
     -h"${DATABASE_HOST}" \
     -u"${DATABASE_USER}" \
     -p"${DATABASE_PASSWORD}" \
-    "${DATABASE_DB}" \
-    "$@"
+    "${DATABASE_DB}"
