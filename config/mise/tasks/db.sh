@@ -19,4 +19,5 @@ mise run in-app-container mysql \
     -h"${DATABASE_HOST}" \
     -u"${DATABASE_USER}" \
     -p"${DATABASE_PASSWORD}" \
-    "${DATABASE_DB}"
+    "${DATABASE_DB}" \
+    "$@"
