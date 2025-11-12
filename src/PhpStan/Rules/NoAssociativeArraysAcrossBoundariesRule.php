@@ -9,7 +9,9 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Rules\Rule;
+use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\Type;
@@ -30,7 +32,9 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
     }
 
     /**
-     * @return array<int, \PHPStan\Rules\RuleError>
+     * @return array<int, RuleError>
+     *
+     * @throws ShouldNotHappenException
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -74,7 +78,9 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
     }
 
     /**
-     * @return array<int, \PHPStan\Rules\RuleError>
+     * @return array<int, RuleError>
+     *
+     * @throws ShouldNotHappenException
      */
     private function checkParameters(ParametersAcceptor $variant, string $className, string $methodName, ClassMethod $node): array
     {
@@ -84,7 +90,7 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
             if ($this->containsDisallowedArray($paramType)) {
                 $paramName = $parameterReflection->getName();
                 $errors[]  = RuleErrorBuilder::message(sprintf(
-                    'Only simple lists (list<T>, non-array T, non-mixed T) are allowed across class boundaries; parameter $%s of %s::%s() uses an associative/complex array type. Define a dedicated DTO instead.',
+                    'Only simple lists (list<T>), or non-array T parameters are allowed across class boundaries; parameter $%s of %s::%s() uses an associative/complex array type, or is incorrectly defined as T[] or array<T> instead of list<T>. Define a dedicated DTO instead if this is indeed a complex/associative array, or change the type annotation to list<T>.',
                     $paramName,
                     $className,
                     $methodName
@@ -96,7 +102,9 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
     }
 
     /**
-     * @return array<int, \PHPStan\Rules\RuleError>
+     * @return array<int, RuleError>
+     *
+     * @throws ShouldNotHappenException
      */
     private function checkReturnType(ParametersAcceptor $variant, string $className, string $methodName, ClassMethod $node): array
     {
@@ -109,7 +117,7 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
             $hasArrayLikeReturn = preg_match('/@return\s+.*(list\s*<\s*array|array\s*<|array\s*\{)/i', $doc) === 1;
             if ($hasArrayLikeReturn) {
                 $errors[] = RuleErrorBuilder::message(sprintf(
-                    'Only simple lists (list<T>, non-array T, non-mixed T) are allowed across class boundaries; return type of %s::%s() uses an associative/complex array type. Define a dedicated DTO instead.',
+                    'Only simple lists (list<T>), or non-array T parameters are allowed across class boundaries; return type of %s::%s() uses an associative/complex array type, or is incorrectly defined as T[] or array<T> instead of list<T>. Define a dedicated DTO instead if this is indeed a complex/associative array, or change the type annotation to list<T>.',
                     $className,
                     $methodName
                 ))->line($node->getLine())->identifier('noAssociativeArraysAcrossBoundaries.return')->build();
@@ -121,7 +129,7 @@ final class NoAssociativeArraysAcrossBoundariesRule implements Rule
         $returnType = $variant->getReturnType();
         if ($this->containsDisallowedArray($returnType)) {
             $errors[] = RuleErrorBuilder::message(sprintf(
-                'Only simple lists (list<T>, non-array T, non-mixed T) are allowed across class boundaries; return type of %s::%s() uses an associative/complex array type. Define a dedicated DTO instead.',
+                'Only simple lists (list<T>), or non-array T parameters are allowed across class boundaries; return type of %s::%s() uses an associative/complex array type, or is incorrectly defined as T[] or array<T> instead of list<T>. Define a dedicated DTO instead if this is indeed a complex/associative array, or change the type annotation to list<T>.',
                 $className,
                 $methodName
             ))->line($node->getLine())->identifier('noAssociativeArraysAcrossBoundaries.return')->build();
