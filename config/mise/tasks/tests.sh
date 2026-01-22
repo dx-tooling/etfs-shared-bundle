@@ -16,7 +16,7 @@ mise run in-app-container mise exec bats -- bats tests/ShellScripts
 
 echo
 echo "Running unit tests..."
-mise run in-app-container php bin/phpunit tests/Unit
+mise run in-app-container php vendor/bin/pest tests/Unit -v
 
 if [ "${QUICK}" == "true" ]
 then
@@ -29,13 +29,13 @@ echo "Running integration tests..."
 mise run in-app-container php bin/console doctrine:database:drop --if-exists --force --env=test
 mise run in-app-container php bin/console doctrine:database:create --env=test
 mise run in-app-container php bin/console doctrine:migrations:migrate --no-interaction --env=test
-mise run in-app-container php bin/phpunit tests/Integration
+mise run in-app-container php vendor/bin/pest tests/Integration -v
 
 echo
 echo "Running application tests..."
 mise run in-app-container php bin/console doctrine:database:drop --if-exists --force --env=test
 mise run in-app-container php bin/console doctrine:database:create --env=test
 mise run in-app-container php bin/console doctrine:migrations:migrate --no-interaction --env=test
-mise run in-app-container php bin/phpunit tests/Application
+mise run in-app-container php vendor/bin/pest tests/Application -v
 
 echo "All tests completed successfully! ✨"
